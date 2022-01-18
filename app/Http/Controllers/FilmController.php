@@ -30,13 +30,16 @@ class FilmController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
+     * (index et create ) Dans les deux cas on va chercher toutes les catégories pour les envoyer à la vue.
+     * Laravel propose le concept de composeur de vue (view composer) pour traiter cette situation de façon plus élégante.
+     * Dans un premier temps on nettoie le contrôleur
+     * ON PEUT LE METTRE DONC DANS App\Providers\AppServiceProvider
      * @return \Illuminate\Http\Response
      */
     public function create()
     {
-        return view('CreationFilm');
+        $categories = Category::all(); // recup toutes les categories
+        return view('CreationFilm', compact('categories')); // on l'affiche dans la views
     }
 
     /**

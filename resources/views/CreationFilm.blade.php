@@ -10,6 +10,14 @@
                 <form action="{{ route('films.store') }}" method="POST">
                     @csrf
                     <div class="field">
+                        <label class="label">Catégorie</label>
+                        <div class="select">
+                            <select name="category_id">
+                                @foreach($categories as $category)
+                                    <option value="{{ $category->id }}">{{ $category->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
                         <label class="label">Titre</label>
                         <div class="control">
                             <input class="input @error('titre') is-danger @enderror" type="text" name="titre" value="{{ old('titre') }}" placeholder="Titre du film">
