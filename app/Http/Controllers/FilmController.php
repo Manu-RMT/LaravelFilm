@@ -18,15 +18,10 @@ class FilmController extends Controller
      */
     public function index($slug = null)
     {
-//        $liste_film = DB::table('films')
-//            ->orderBy('titre', 'asc')
-//            ->paginate(5);
-        //        $liste_film = FilmModel::withTrashed()->oldest('titre')->paginate(5);
+        // voir autre methode dans le depot git
         $query = $slug ? Category::whereSlug($slug)->firstOrFail()->films() : Film::query();
         $liste_film = $query->withTrashed()->oldest('titre')->paginate(5);
-        $categories = Category::all();
-
-        return view('Accueil', compact('liste_film', 'categories', 'slug'));
+        return view('Accueil', compact('liste_film', 'slug'));
     }
 
     /**
@@ -39,7 +34,7 @@ class FilmController extends Controller
     public function create()
     {
         $categories = Category::all(); // recup toutes les categories
-        return view('CreationFilm', compact('categories')); // on l'affiche dans la views
+        return view('CreationFilm'); // on l'affiche dans la views
     }
 
     /**
