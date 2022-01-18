@@ -9,6 +9,13 @@
             <div class="content">
                 <p>Année de sortie : <strong> {{ $film->annee }}</strong></p>
                 <hr>
+                <p>Catégories :</p>
+                <ul>
+                    @foreach($film->category as $category)
+                        <li>{{ $category->name }}</li>
+                    @endforeach
+                </ul>
+                <hr>
                 <legend>Avis :</legend>
                 <p><strong>{{ $film->description }}</strong></p>
             </div>
