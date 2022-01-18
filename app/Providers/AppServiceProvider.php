@@ -27,7 +27,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        View::composer(['Accueil', 'createFilm'], function ($view) {
+        View::composer(['Accueil', 'createFilm','ShowFilm'], function ($view) {
             $view->with('categories', Category::all());
         });
     }

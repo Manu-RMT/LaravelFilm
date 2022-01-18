@@ -20,7 +20,7 @@ class FilmController extends Controller
     {
         // voir autre methode dans le depot git
         $query = $slug ? Category::whereSlug($slug)->firstOrFail()->films() : Film::query();
-        $liste_film = $query->withTrashed()->oldest('titre')->paginate(5);
+        $liste_film = $query->withTrashed()->latest('annee')->paginate(5);
         return view('Accueil', compact('liste_film', 'slug'));
     }
 
@@ -34,7 +34,7 @@ class FilmController extends Controller
     public function create()
     {
         $categories = Category::all(); // recup toutes les categories
-        return view('CreationFilm'); // on l'affiche dans la views
+        return view('CreationFilm',compact('categories')); // on l'affiche dans la views
     }
 
     /**
@@ -45,7 +45,8 @@ class FilmController extends Controller
      */
     public function store(FilmRequest $request)
     {
-        FilmModel::create($request->all());
+        $film = FilmModel::create($request->all());
+        $film->category()->attach($request->cats_selected); //cats_selected tableau
         return redirect()->route('films.index')->with('info', 'Le film a été créé');
     }
 
