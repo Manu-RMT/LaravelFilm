@@ -34,7 +34,7 @@ class FilmController extends Controller
     public function create()
     {
         $categories = Category::all(); // recup toutes les categories
-        return view('CreationFilm',compact('categories')); // on l'affiche dans la views
+        return view('CreationFilm', compact('categories')); // on l'affiche dans la views
     }
 
     /**
@@ -66,9 +66,9 @@ class FilmController extends Controller
      * @param int $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Film $film)
     {
-        //
+        return view('EditFilm', compact('film'));
     }
 
     /**
@@ -78,9 +78,12 @@ class FilmController extends Controller
      * @param int $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(FilmRequest $film_request, Film $film)
     {
-        //
+
+        $film->update($film_request->all());
+        $film->category()->sync($film_request->cats_selected);
+        return redirect()->route('films.index')->with('info', 'Le film a bien été modifié');
     }
 
     /**
