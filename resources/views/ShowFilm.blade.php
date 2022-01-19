@@ -16,6 +16,13 @@
                     @endforeach
                 </ul>
                 <hr>
+                <p>Acteurs :</p>
+                <ul>
+                    @foreach($film->actors as $actor)
+                        <li>{{ $actor->name }}</li>
+                    @endforeach
+                </ul>
+                <hr>
                 <legend>Avis :</legend>
                 <p><strong>{{ $film->description }}</strong></p>
             </div>

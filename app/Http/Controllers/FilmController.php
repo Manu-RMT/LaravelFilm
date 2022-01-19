@@ -2,12 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Actor;
 use App\Models\Category;
 use App\Models\Film;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use App\Models\Film as FilmModel;
 use Illuminate\Support\Facades\DB;
 use App\Http\Requests\Film as FilmRequest;
+use Illuminate\Support\Facades\Route;
 
 class FilmController extends Controller
 {
@@ -19,8 +22,16 @@ class FilmController extends Controller
      */
     public function index($slug = null)
     {
+
+        $model = null;
+        if (Route::currentRouteName() == 'films.category') {
+            $model = new Category();
+        } else {
+            $model = new Actor();
+        }
+
         // voir autre methode dans le depot git
-        $query = $slug ? Category::whereSlug($slug)->firstOrFail()->films() : Film::query();
+        $query = $slug ? $model::whereSlug($slug)->firstOrFail()->films() : Film::query();
         $liste_film = $query->withTrashed()->latest('annee')->paginate(5);
         return view('Accueil', compact('liste_film', 'slug'));
     }
@@ -35,7 +46,8 @@ class FilmController extends Controller
     public function create()
     {
         $categories = Category::all(); // recup toutes les categories
-        return view('CreationFilm', compact('categories')); // on l'affiche dans la views
+        $actors = Actor::all();
+        return view('CreationFilm', compact('categories', 'actors')); // on l'affiche dans la views
     }
 
     /**
@@ -48,6 +60,7 @@ class FilmController extends Controller
     {
         $film = FilmModel::create($request->all());
         $film->category()->attach($request->cats_selected); //cats_selected tableau
+        $film->actors()->attach($request->acts);
         return redirect()->route('films.index')->with('info', 'Le film a été créé');
     }
 
@@ -84,6 +97,7 @@ class FilmController extends Controller
 
         $film->update($film_request->all());
         $film->category()->sync($film_request->cats_selected);
+        $film->actors()->sync($film_request->acts);
         return redirect()->route('films.index')->with('info', 'Le film a bien été modifié');
     }
 

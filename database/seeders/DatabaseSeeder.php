@@ -28,7 +28,6 @@ class DatabaseSeeder extends Seeder
             'Espionnage',
             'Guerre',
             'Policier',
-            'Pornographique',
         ];
         foreach ($categories as $category) {
             Category::create(['name' => $category, 'slug' => Str::slug($category)]);

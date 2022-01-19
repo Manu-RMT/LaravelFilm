@@ -49,8 +49,8 @@ class RouteServiceProvider extends ServiceProvider
                 ->group(base_path('routes/web.php'));
         });
         parent::boot();
-        Route::bind('film', function ($value) {
-            return Film::with('category')->find($value) ?? abort(500);
+        Route::bind('films', function ($value) {
+            return Film::with('category','actors')->find($value) ?? abort(404);
         });
     }
 
