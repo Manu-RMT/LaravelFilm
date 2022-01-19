@@ -23,3 +23,4 @@ Route::delete('films/force/{id}', [FilmController::class, 'forceDestroy'])->name
 Route::put('films/restore/{id}', [FilmController::class, 'restore'])->name('films.restore');
 //cherche film par categorie
 Route::get('category/{slug}/films', [FilmController::class, 'index'])->name('films.category');
+Route::get('actor/{slug}/films', [FilmController::class, 'index'])->name('films.actor'); // selection film par acteurs

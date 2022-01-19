@@ -3,9 +3,11 @@
 namespace Database\Seeders;
 
 
+use App\Models\Actor;
 use App\Models\Category;
 use App\Models\Film;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Str;
 
 class DatabaseSeeder extends Seeder
 {
@@ -15,12 +17,30 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-       // Category::factory(10)->create(); // On commence par créer 10 catégories
+        Actor::factory(10)->create();
+        $categories = [
+            'Comédie',
+            'Drame',
+            'Action',
+            'Fantastique',
+            'Horreur',
+            'Animation',
+            'Espionnage',
+            'Guerre',
+            'Policier',
+            'Pornographique',
+        ];
+        foreach ($categories as $category) {
+            Category::create(['name' => $category, 'slug' => Str::slug($category)]);
+        }
         $ids = range(1, 10);
-        //on crée 20 films et pour chacun on attache entre 1 et 4 catégories
-        Film::factory(20)->create()->each(function ($film) use ($ids) {
+        Film:: factory(40)->create()->each(function ($film) use ($ids) {
             shuffle($ids);
-            $film->category()->attach(array_slice($ids, 0, rand(1, 4))); // attach 1 à 4 categories avec films et Eloquent ce charge de remplr la table pivot
+            $film->category()->attach(array_slice($ids, 0, rand(1, 4)));
+            shuffle($ids);
+            $film->actors()->attach(array_slice($ids, 0, rand(1, 4)));
         });
+
+
     }
 }

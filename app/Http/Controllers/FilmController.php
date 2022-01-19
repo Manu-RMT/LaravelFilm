@@ -13,6 +13,7 @@ class FilmController extends Controller
 {
     /**
      * Display a listing of the resource.
+     * on a deux cas de slug donc faut changer
      *
      * @return \Illuminate\Http\Response
      */
