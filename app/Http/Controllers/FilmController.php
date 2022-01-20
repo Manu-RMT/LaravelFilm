@@ -32,7 +32,7 @@ class FilmController extends Controller
 
         // voir autre methode dans le depot git
         $query = $slug ? $model::whereSlug($slug)->firstOrFail()->films() : Film::query();
-        $liste_film = $query->withTrashed()->latest('annee')->paginate(5);
+        $liste_film = $query->withTrashed()->latest('annee')->paginate(10);
         return view('Accueil', compact('liste_film', 'slug'));
     }
 

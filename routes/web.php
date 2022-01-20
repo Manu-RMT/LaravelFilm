@@ -18,6 +18,7 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+
 Route::resource('films', FilmController::class);
 Route::delete('films/force/{id}', [FilmController::class, 'forceDestroy'])->name('films.force.destroy');
 Route::put('films/restore/{id}', [FilmController::class, 'restore'])->name('films.restore');

@@ -39,6 +39,12 @@ class RouteServiceProvider extends ServiceProvider
         $this->configureRateLimiting();
 
         $this->routes(function () {
+
+            parent::boot();
+            Route::bind('film', function ($value) {
+                return Film::with('category', 'actors')->find($value) ?? abort(404);
+            });
+
             Route::prefix('api')
                 ->middleware('api')
                 ->namespace($this->namespace)
@@ -48,10 +54,7 @@ class RouteServiceProvider extends ServiceProvider
                 ->namespace($this->namespace)
                 ->group(base_path('routes/web.php'));
         });
-        parent::boot();
-        Route::bind('films', function ($value) {
-            return Film::with('category','actors')->find($value) ?? abort(404);
-        });
+
     }
 
     /**
